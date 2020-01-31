@@ -21,19 +21,18 @@ namespace eosio {
          * all that is needed to authenticate the transaction
          * @param provided - Permission level which is provided, this combined with a delay must be the executer
          * permission.  If a contract is being protected then this will be `yourcontract@eosio.code`
-         * @param canceller - Permission level authorized to cancel this delayed transaction
          * @param trx - Proposed transaction
          */
         [[eosio::action]]
         void
         propose(ignore <name> proposal_name, ignore <permission_level> executer, ignore <permission_level> provided,
-                ignore <permission_level> canceller, ignore <transaction> trx);
+                ignore <transaction> trx);
 
         [[eosio::action]]
-        void cancel(name proposer, name proposal_name);
+        void cancel(name executer, name proposal_name);
 
         [[eosio::action]]
-        void exec(name proposer, name proposal_name);
+        void exec(name executer, name proposal_name);
 
         using propose_action = eosio::action_wrapper<"propose"_n, &delay::propose>;
         using cancel_action = eosio::action_wrapper<"cancel"_n, &delay::cancel>;
@@ -47,8 +46,6 @@ namespace eosio {
             name              proposal_name;
             // The final permission that will be used to execute the transaction
             permission_level  executer;
-            // Permission authorised to cancel this proposal
-            permission_level  canceller;
             // Packed transaction to execute, actions are sent inline on `exec`
             std::vector<char> packed_transaction;
 

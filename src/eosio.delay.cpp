@@ -7,16 +7,15 @@ namespace eosio {
 
     void
     delay::propose(ignore <name> proposal_name, ignore <permission_level> executer, ignore <permission_level> provided,
-                   ignore <permission_level> canceller, ignore <transaction> trx) {
+                   ignore <transaction> trx) {
         name _proposal_name;
         permission_level _executer;
         permission_level _provided;
-        permission_level _canceller;
         transaction_header _trx_header;
         std::vector <permission_level> _executers;
         std::vector <permission_level> _provideds;
 
-        _ds >> _proposal_name >> _executer >> _provided >> _canceller;
+        _ds >> _proposal_name >> _executer >> _provided;
 
         name proposer = _executer.actor;
 
@@ -63,7 +62,6 @@ namespace eosio {
             prop.proposal_time = current_time_point();
             prop.proposal_name = _proposal_name;
             prop.executer = _executer;
-            prop.canceller = _canceller;
             prop.packed_transaction = pkd_trans;
         });
     }
@@ -73,7 +71,7 @@ namespace eosio {
         auto prop = proptable.find(proposal_name.value);
         check(prop != proptable.end(), "delayed transaction not found");
 
-        require_auth(prop->canceller);
+        require_auth(prop->executer.actor);
         proptable.erase(prop);
     }
 
