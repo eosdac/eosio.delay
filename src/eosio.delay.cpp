@@ -79,16 +79,15 @@ namespace eosio {
         proposals proptable(get_self(), proposer.value);
         auto prop = proptable.get(proposal_name.value, "delayed transaction not found");
 
-        transaction_header trx_header;
+        transaction trx;
         datastream<const char*> ds( prop.packed_transaction.data(), prop.packed_transaction.size() );
-        ds >> trx_header;
-        check( trx_header.expiration >= eosio::time_point_sec(current_time_point()), "transaction expired" );
+        ds >> trx;
+        check( trx.expiration >= eosio::time_point_sec(current_time_point()), "transaction expired" );
 
         uint32_t time_now = current_time_point().sec_since_epoch();
-        uint32_t delay_sec = static_cast<uint32_t>(trx_header.delay_sec);
+        uint32_t delay_sec = static_cast<uint32_t>(trx.delay_sec);
         check(prop.proposal_time.sec_since_epoch() + delay_sec <= time_now, "not ready to execute");
 
-        auto trx = unpack<transaction>(prop.packed_transaction);
         for (action act: trx.actions){
             print("\nsending ", act.account, "::", act.name);
             act.send();
