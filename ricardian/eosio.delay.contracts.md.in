@@ -1,0 +1,32 @@
+<h1 class="contract">propose</h1>
+
+---
+spec_version: "0.2.0"
+title: Propose Delayed Transaction
+summary: '{{nowrap provided.actor}} proposes the {{nowrap proposal_name}} delayed transaction'
+icon: @ICON_BASE_URL@/@MULTISIG_ICON_URI@
+---
+
+{{provided.actor}} is proposing a delayed transaction with name {{proposal_name}}.
+
+<h1 class="contract">cancel</h1>
+
+---
+spec_version: "0.2.0"
+title: Cancel Delayed Transaction
+summary: 'Cancels the {{nowrap proposal_name}} proposal'
+icon: @ICON_BASE_URL@/@MULTISIG_ICON_URI@
+---
+
+Cancels the {{proposal_name}} proposal submitted by {{proposer}}.
+
+<h1 class="contract">exec</h1>
+
+---
+spec_version: "0.2.0"
+title: Execute Delayed Transaction
+summary: 'Execute the {{nowrap proposal_name}} delayed transaction'
+icon: @ICON_BASE_URL@/@MULTISIG_ICON_URI@
+---
+
+Executes the {{proposal_name}} delayed transaction.
